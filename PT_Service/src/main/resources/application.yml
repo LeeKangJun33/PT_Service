@@ -1,6 +1,6 @@
 spring:
   datasource:
     url: jdbc:h2:mem:mydb
-    username: PtLocal
+    username: root
     password: soap18701!
     driver-class-name: org.h2.Driver
