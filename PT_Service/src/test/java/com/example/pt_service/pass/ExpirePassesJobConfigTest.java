@@ -1,5 +1,6 @@
 package com.example.pt_service.pass;
 
+import com.example.pt_service.job.pass.ExpirePassesJobConfig;
 import com.example.pt_service.pass.config.TestBatchConfig;
 import com.example.pt_service.repository.pass.PassEntity;
 import com.example.pt_service.repository.pass.PassRepository;
@@ -23,14 +24,12 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 @Slf4j
 @SpringBatchTest
 @SpringBootTest
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {ExpirePassesJobConfigTest.class, TestBatchConfig.class})
+@ContextConfiguration(classes = {ExpirePassesJobConfig.class, TestBatchConfig.class})
 public class ExpirePassesJobConfigTest {
-
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
 
@@ -71,4 +70,5 @@ public class ExpirePassesJobConfigTest {
         passRepository.saveAll(passEntities);
 
     }
+
 }
