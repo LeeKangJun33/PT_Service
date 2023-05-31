@@ -1,6 +1,12 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:mydb
+    url: jdbc:mysql://127.0.0.1:3306/Pt_Table?zeroDataTimeBehavior=convertToNull&characterEncoding=UTF-8&serverTimeZone=Asia/Seoul
     username: root
     password: soap18701!
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+
+  batch:
+    jdbc:
+      initialize-schema: always

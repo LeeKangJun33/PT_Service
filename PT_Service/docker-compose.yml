@@ -6,12 +6,12 @@ services:
     container_name: PT_Service
     image: mysql:8.0.33
     volumes:
-      - ./db/conf.d/:/etc/mysql/conf.d
-      - ./db/initdb.d/:/docker-entrypoint-initdb -d
+      - ./db/conf.d:/etc/mysql/conf.d             # MySQL 설정 파일이 있습니다.
+      - ./db/initdb.d:/docker-entrypoint-initdb.d # sh, sql을 파일명 알파벳순으로 수행합니다. 테이블 create, insert 쿼리 파일이 들어있습니다.
     ports:
       - "3307:3307"
     environment:
-     - MYSQL_DATABASE=PtTable
+     - MYSQL_DATABASE=Pt_Table
      - MYSQL_USER=root
      - MYSQL_PASSWORD=soap18701!
      - MYSQL_ROOT_PASSWORD=soap18701!
