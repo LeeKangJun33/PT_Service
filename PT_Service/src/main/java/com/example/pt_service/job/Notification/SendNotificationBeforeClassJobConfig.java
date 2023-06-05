@@ -10,9 +10,16 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.database.JpaCursorItemReader;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
+import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
+import org.springframework.batch.item.support.SynchronizedItemStreamReader;
+import org.springframework.batch.item.support.builder.SynchronizedItemStreamReaderBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDateTime;
@@ -69,6 +76,40 @@ public class SendNotificationBeforeClassJobConfig {
     @Bean
     public ItemProcessor<BookingEntity, NotificationEntity> addNotificationItemProcessor() {
         return bookingEntity -> NotificationModelMapper.INSTANCE.toNotificationEntity(bookingEntity, NotificationEvent.BEFORE_CLASS);
+    }
+
+    @Bean
+    public JpaItemWriter<NotificationEntity> addNotificationItemWriter(){
+        return new JpaItemWriterBuilder<NotificationEntity>()
+                .entityManagerFactory(entityManagerFactory)
+                .build();
+    }
+
+    @Bean
+    public Step sendNotificationStep(){
+        return this.stepBuilderFactory.get("sendNotificationStep")
+                .<NotificationEntity , NotificationEntity>chunk(CHUNK_SIZE)
+                .reader(sendNotificationItemReader())
+                .writer(sendNotificationItemWriter)
+                .taskExecutor(new SimpleAsyncTaskExecutor())// 가장 간단한 멀티쓰레드 TaskExecutor를 선언
+                .build();
+
+    }
+
+    @Bean
+    public SynchronizedItemStreamReader<NotificationEntity> sendNotificationItemReader(){
+        //이벤트 가 수업 전이면, 발송여부(send) 가 미발송인 알람이 조회 대상으로 해줌
+        JpaCursorItemReader<NotificationEntity> itemReader = new JpaCursorItemReaderBuilder<NotificationEntity>()
+                .name("sendNotificationItemReader")
+                .entityManagerFactory(entityManagerFactory)
+                .queryString("select n from NotificationEntity n where n.event = :event and n.sent = :sent")
+                .parameterValues(Map.of("event",NotificationEvent.BEFORE_CLASS,"sent",false))
+                .build();
+
+        return new SynchronizedItemStreamReaderBuilder<NotificationEntity>()
+                .delegate(itemReader)
+                .build();
+
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.Map;
 @ToString
 @Entity
 @Table(name = "user")
-// json의 타입을 정의합니다.
+// json의 타입을 정의
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class UserEntity extends BaseEntity {
     @Id
@@ -27,7 +27,7 @@ public class UserEntity extends BaseEntity {
     private UserStatus status;
     private String phone;
 
-    // json 형태로 저장되어 있는 문자열 데이터를 Map으로 매핑합니다.
+    // json 형태로 저장되어 있는 문자열 데이터를 Map으로 매핑
     @Type(type = "json")
     private Map<String, Object> meta;
 

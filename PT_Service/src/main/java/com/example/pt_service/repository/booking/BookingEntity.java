@@ -2,6 +2,7 @@ package com.example.pt_service.repository.booking;
 
 import com.example.pt_service.repository.BaseEntity;
 import com.example.pt_service.repository.pass.PassEntity;
+import com.example.pt_service.repository.user.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
