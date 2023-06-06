@@ -11,14 +11,11 @@
 - JAVA11
 - Spring boot 2.7.5
 - DB: My SQL
-- Maven
-- Spring boot Security
-- Spring boot JPA
+- Docker
+- Gradle
+- Spring boot Batch
+
 
 *Front-end*
-
-- HTML
-- CSS
-- Javascript
-- Thymeleaf
+- 아직 미구현
 ------------------------------
