@@ -1,4 +1,7 @@
 # PT_Service
+--------------------------
+## 2개로 나눔
+
 
 :hammer: 사용기술
 --------------------------
@@ -14,8 +17,9 @@
 - Docker
 - Gradle
 - Spring boot Batch
+- Spring JPA
 
 
 *Front-end*
-- 아직 미구현
+- Thymeleaf
 ------------------------------
